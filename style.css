@@ -153,6 +153,11 @@ a {
     font-size: 1rem;
     border-radius: 8px;
     background-color: #0E6B0F;
+
+}
+
+.pesquisa > button:hover {
+    cursor: pointer;
 }
 
 .botoes-container {
