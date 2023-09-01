@@ -1,0 +1,21 @@
+{
+  "name": "ifood-fake",
+  "version": "0.0.1-dev",
+  "description": "",
+  "keywords": [],
+  "main": "main.js",
+  "author": "KarboXXX & SrReykh",
+  "authors": ["KarboXXX", "SrReykh"],
+  "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.1.0"
+  },
+  "dependencies": {
+    "@webcontainer/api": "^1.1.3"
+  }
+}
