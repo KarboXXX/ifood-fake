@@ -1,7 +1,6 @@
 import './style.css';
-import { geoapify } from './secrets';
-import { WebContainer } from '@webcontainer/api';
-
+// import { geoapify } from './secrets';
+// import { WebContainer } from '@webcontainer/api';
 
 var latitude;
 var longitude;
@@ -10,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * input de texto onde coloca o endereço para entrega.
-     * @typedef {HTMLElement}
+     * @type {HTMLElement}
      */
     var entregaInputElement = document.getElementById("entrega-input");
 
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Pede permissão do cliente para usar o GPS, caso a permissão seja cedida, é retornado
      * Latitude e longitude, caso seja negado, é retornado Error Object (error.code & error.message)
      * 
-     * @async
+     * @type {Promise<void>}
      * @returns {Array} [latitude, longitude]
      */
     function gpsRequest() {
@@ -26,17 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.geolocation.getCurrentPosition((pos) => {
                 latitude = pos.coords.latitude;
                 longitude = pos.coords.longitude;
-                let message = `(Latitude, Longitude) ${latitude}, ${longitude}`;
-        
-                console.info(message);
+
+                // let message = `(Latitude, Longitude) ${latitude}, ${longitude}`;
+                // console.info(message);
+
                 /**
-                 * data é um array com latitude na posição 0, e longitude na posição 1.
+                 * posArray é um array com latitude na posição 0, e longitude na posição 1.
                  * [latitude, longitude]
                  * 
-                 * @typedef {number}
+                 * @type {number[]}
                  */
-                let data = [latitude, longitude];
-                return resolve(data);
+                let posArray = [latitude, longitude];
+                return resolve(posArray);
             }, (err) => {
                 return reject(err);
             });
@@ -45,33 +45,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Completa o endereço do pedido automaticamente usando latitude e longitude do cliente
-     * @fires fetch(API);
      */
     function autocompleteAdress() {
         if (entregaInputElement.value.length >= 10)
             return;
 
         let pastPlaceholder = entregaInputElement.placeholder;
-        entregaInputElement.placeholder = 'Consultando GPS...';
-        gpsRequest().then((data) => {
-            var requestOptions = {
-                method: 'GET',
-            };
-            
-            // Pra mais informações sobre o resultado da API,
-            // visite https://apidocs.geoapify.com/docs/geocoding/reverse-geocoding
-            fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${data[0]}&lon=${data[1]}&apiKey=${geoapify.api}`, requestOptions)
-            .then(response => response.json()).then(result => {
-                entregaInputElement.placeholder = pastPlaceholder;
+        entregaInputElement.placeholder = 'Pedindo permissão GPS...';
 
-                /**
-                 * Endereço formatado
-                 */
-                let address = result.features[0].properties.formatted;
-                entregaInputElement.value = address;
-            }).catch(error => {
-                console.log('error', error)
-            });
+        gpsRequest().then((pos) => {
+
+            entregaInputElement.placeholder = 'Consultando GPS...';
+
+            // fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${data[0]}&lon=${data[1]}&apiKey=${import.meta.env.VITE_GEOAPIFY_API}`, requestOptions)
+            // .then(response => response.json()).then(result => {
+            //     entregaInputElement.placeholder = pastPlaceholder;
+            //
+            //     /**
+            //      * Endereço formatado
+            //      */
+            //     let address = result.features[0].properties.formatted;
+            //     entregaInputElement.value = address;
+            // }).catch(error => {
+            //     console.log('error', error)
+            // });
+
+            // NÃO USE O METODO ACIMA PARA UTILIZAR API's !!!!!! USE UMA PROXY
+            //
+            // ao usar proxys, o client mesmo observando os pacotes que passam pelo frontend
+            // do cliente, ele não encontra a API KEY. Usando uma proxy, podemos
+            // cuidar das credenciais do lado da proxy.
+            //
+            // para inicar a proxy localhost, inicie o arquivo proxyapi.js com nodejs.
+            // 
+            // mande um pacote GET para a proxy (localhost na branch dev) passando latitude e longitude.
+
+            fetch(`http://localhost:3000/api/geo?lat=${pos[0]}&lon=${pos[1]}`, {method: 'GET'})
+            .then(response => response.json()).then(result => {
+                    entregaInputElement.placeholder = pastPlaceholder;
+
+                    /**
+                     * Endereço formatado
+                     */
+                    let address = result.features[0].properties.formatted;
+                    entregaInputElement.value = address;
+                }).catch(error => {
+                    console.log('error', error)
+                    entregaInputElement.placeholder = pastPlaceholder;
+                });
+
         }, (err) => {
             if (err.code != 1) {
                 new Promise(() => {
