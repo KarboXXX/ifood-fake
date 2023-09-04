@@ -111,4 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     entregaInputElement.addEventListener('click', autocompleteAdress);
+
+    var modal = document.getElementById("modal");
+    var mercado_btn = document.getElementById("mercado-btn");
+
+    mercado_btn.addEventListener("click", () => {
+        modal.style.display = 'flex';   
+    })
+    
+    window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }  
 })
+

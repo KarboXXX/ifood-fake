@@ -86,6 +86,7 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'IFood RC Titulos', sans-serif;
 
     --texto: 'iFood RC Textos', sans-serif;
     --titulo: 'iFood RC Titulos', sans-serif;
@@ -93,8 +94,8 @@
 
 body {
     overflow-x: hidden;
-    height: 2000px;
-    
+    height: 900px;
+    box-sizing: border-box;
 }
 
 .container {
@@ -180,7 +181,7 @@ body {
 
 }
 
-a {
+.ancora-header {
     font-family: var(--texto);
     margin-left: 35px;
     text-decoration: none;
@@ -294,4 +295,99 @@ a {
     font-size: .875rem;
     border-radius: 100px;
     cursor: pointer;
+}
+
+.modal {
+    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    transition: 0.5s;
+    background-color: rgba(0, 0, 0, 0.247);
+}
+
+.modal-content {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    width: 700px;
+    border-radius: 5px;
+    height: 510px;
+    background-color: white;
+    transition: linear;
+}
+
+#modal-p {
+    font-weight: 300;
+    font-size: 19px;
+}
+
+#modal-p2 {
+    padding-top: 40px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#modal-p3 {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+#botao-pesquisa {
+    padding: 5px;
+    padding-left: 15px;
+    display: flex;
+    align-items: center ;
+    width: 600px;
+    height: 45px;
+    background-color: #F7F7F7;
+    border-radius: 5px;
+}
+
+#modal-input {
+    border: none;
+    width: 590px;
+    outline: none;
+    margin-left: 25px;
+    background-color: #F7F7F7;
+    font-size: 16px;
+}
+
+#div-gps {
+    display: flex;
+    align-items: center;
+    width: 600px;
+    height: 55px;
+    border: 1px solid #F7F7F7;
+    background-color: white;
+    padding-left: 15px;
+}
+
+#div-gps:hover {
+    transition: 0.5s;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.377)
+}
+
+#label-model {
+    width: 590px;
+    margin-left: 20px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btn-gps {
+    display: none;
+}
+
+#ancora-modal {
+    text-decoration: none;
+    color:  #0E6B0F;
+    font-weight: 600;
 }
