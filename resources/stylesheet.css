@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('iFoodRCTitulos-Thin.eot');
+    src: local('iFood RC Titulos Thin'), local('iFoodRCTitulos-Thin'),
+        url('iFoodRCTitulos-Thin.eot?#iefix') format('embedded-opentype'),
+        url('iFoodRCTitulos-Thin.woff2') format('woff2'),
+        url('iFoodRCTitulos-Thin.woff') format('woff'),
+        url('iFoodRCTitulos-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('iFoodRCTitulos-Light.eot');
+    src: local('iFood RC Titulos Light'), local('iFoodRCTitulos-Light'),
+        url('iFoodRCTitulos-Light.eot?#iefix') format('embedded-opentype'),
+        url('iFoodRCTitulos-Light.woff2') format('woff2'),
+        url('iFoodRCTitulos-Light.woff') format('woff'),
+        url('iFoodRCTitulos-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('iFoodRCTitulos-Bold.eot');
+    src: local('iFood RC Titulos Bold'), local('iFoodRCTitulos-Bold'),
+        url('iFoodRCTitulos-Bold.eot?#iefix') format('embedded-opentype'),
+        url('iFoodRCTitulos-Bold.woff2') format('woff2'),
+        url('iFoodRCTitulos-Bold.woff') format('woff'),
+        url('iFoodRCTitulos-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('iFoodRCTitulos-Regular.eot');
+    src: local('iFood RC Titulos'), local('iFoodRCTitulos-Regular'),
+        url('iFoodRCTitulos-Regular.eot?#iefix') format('embedded-opentype'),
+        url('iFoodRCTitulos-Regular.woff2') format('woff2'),
+        url('iFoodRCTitulos-Regular.woff') format('woff'),
+        url('iFoodRCTitulos-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('iFoodRCTitulos-ExtraBold.eot');
+    src: local('iFood RC Titulos ExtraBold'), local('iFoodRCTitulos-ExtraBold'),
+        url('iFoodRCTitulos-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('iFoodRCTitulos-ExtraBold.woff2') format('woff2'),
+        url('iFoodRCTitulos-ExtraBold.woff') format('woff'),
+        url('iFoodRCTitulos-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('iFoodRCTitulos-Medium.eot');
+    src: local('iFood RC Titulos Medium'), local('iFoodRCTitulos-Medium'),
+        url('iFoodRCTitulos-Medium.eot?#iefix') format('embedded-opentype'),
+        url('iFoodRCTitulos-Medium.woff2') format('woff2'),
+        url('iFoodRCTitulos-Medium.woff') format('woff'),
+        url('iFoodRCTitulos-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

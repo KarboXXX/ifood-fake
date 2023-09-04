@@ -1,12 +1,94 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'IFood RC Textos', sans-serif;
+@font-face {
+    font-family: 'iFood RC Textos';
+    src: url(resources/iFoodRCTextos-Regular.ttf) format('truetype');
 }
 
 @font-face {
-    font-family: 'IFood RC Textos';
-    src: url(resources/iFoodRCTextos-Regular.ttf) format('truetype');
+    font-family: 'iFood RC Titulos';
+    src: url('resources/iFoodRCTitulos-Thin.eot');
+    src: local('iFood RC Titulos Thin'), local('resources/iFoodRCTitulos-Thin'),
+        url('resources/iFoodRCTitulos-Thin.eot?#iefix') format('embedded-opentype'),
+        url('resources/iFoodRCTitulos-Thin.woff2') format('woff2'),
+        url('resources/iFoodRCTitulos-Thin.woff') format('woff'),
+        url('resources/iFoodRCTitulos-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('resources/iFoodRCTitulos-Light.eot');
+    src: local('iFood RC Titulos Light'), local('resources/iFoodRCTitulos-Light'),
+        url('resources/iFoodRCTitulos-Light.eot?#iefix') format('embedded-opentype'),
+        url('resources/iFoodRCTitulos-Light.woff2') format('woff2'),
+        url('resources/iFoodRCTitulos-Light.woff') format('woff'),
+        url('resources/iFoodRCTitulos-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('resources/iFoodRCTitulos-Bold.eot');
+    src: local('iFood RC Titulos Bold'), local('resources/iFoodRCTitulos-Bold'),
+        url('resources/iFoodRCTitulos-Bold.eot?#iefix') format('embedded-opentype'),
+        url('resources/iFoodRCTitulos-Bold.woff2') format('woff2'),
+        url('resources/iFoodRCTitulos-Bold.woff') format('woff'),
+        url('resources/iFoodRCTitulos-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('resources/iFoodRCTitulos-Regular.eot');
+    src: local('iFood RC Titulos'), local('resources/iFoodRCTitulos-Regular'),
+        url('resources/iFoodRCTitulos-Regular.eot?#iefix') format('embedded-opentype'),
+        url('resources/iFoodRCTitulos-Regular.woff2') format('woff2'),
+        url('resources/iFoodRCTitulos-Regular.woff') format('woff'),
+        url('resources/iFoodRCTitulos-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('resources/iFoodRCTitulos-ExtraBold.eot');
+    src: local('iFood RC Titulos ExtraBold'), local('resources/iFoodRCTitulos-ExtraBold'),
+        url('resources/iFoodRCTitulos-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('resources/iFoodRCTitulos-ExtraBold.woff2') format('woff2'),
+        url('resources/iFoodRCTitulos-ExtraBold.woff') format('woff'),
+        url('resources/iFoodRCTitulos-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'iFood RC Titulos';
+    src: url('resources/iFoodRCTitulos-Medium.eot');
+    src: local('iFood RC Titulos Medium'), local('resources/iFoodRCTitulos-Medium'),
+        url('resources/iFoodRCTitulos-Medium.eot?#iefix') format('embedded-opentype'),
+        url('resources/iFoodRCTitulos-Medium.woff2') format('woff2'),
+        url('resources/iFoodRCTitulos-Medium.woff') format('woff'),
+        url('resources/iFoodRCTitulos-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+
+    --texto: 'iFood RC Textos', sans-serif;
+    --titulo: 'iFood RC Titulos', sans-serif;
 }
 
 body {
@@ -30,32 +112,43 @@ body {
     width: 500px;
     height: 86px;
     border: 1px solid black;
+    font-family: var(--texto);
 }
 
 .nav-itens {
     width: 50vw;
+    
+}
 
+.nav-itens > a {
+    font-family: var(--texto);
+    color: #3D3D3D;
 }
 
 .nav-login {
-    width: 50vw;
+    width: 40vw;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    font-family: var(--texto);
 }
 
 #entrar {
-    margin-left: 40px;
-    margin-right: 80px;
-    width: 100px;
-    height: 45px;
+    margin-left: 37px;
+    margin-right: 104px;
+    width: 104px;
+    height: 44px;
     outline: none;
     border: none;
-    font-size: 1rem;
     border-radius: 5px;
     background-color: #0E6B0F;
+    font-family: var(--texto);
+    font-size: 1rem;
+    cursor: pointer;
     color: white;
     transition: 0.5s;
+    font-size: 1rem;
+    line-height: 1em;
 }
 
 #entrar:hover {
@@ -75,9 +168,20 @@ body {
 #criar-conta {
     color: #0E6B0F;
     font-weight: bold;
+    font-family: var(--texto);
+    font-size: 1rem;
+    line-height: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: transparent;
+    padding: none;
+    border: none;
+
+
 }
 
 a {
+    font-family: var(--texto);
     margin-left: 35px;
     text-decoration: none;
     color: black;
@@ -85,7 +189,7 @@ a {
 
 ::selection {
     color: white;
-    background-color: #0E6B0F;
+    background-color: #004d01;
 }
 
 #header {
@@ -95,6 +199,7 @@ a {
 }
 
 .container-principal {
+    font-family: var(--texto);
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -106,6 +211,8 @@ a {
 }
 
 .container-texto-principal {
+    font-family: var(--titulo);
+    font-weight: 500;
     display: flex;
     margin-top: 180px;
     justify-content: flex-start;
@@ -116,23 +223,28 @@ a {
 }
 
 #titulo {
-    font-size: 45px;
+    font-size: 54px;
     color: #3E3E3E;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 #subtitulo {
+    font-family: var(--texto);
     margin-top: 5px;
-    font-size: 18px;
+    font-size: 20px;
+    text-align: center;
     color: #3E3E3E;
-    font-weight: 100;
+    font-weight: 300;
 }
 
 .pesquisa {
     margin-top: 50px;
+    font-family: var(--texto);
 }
 
 .pesquisa > input[type=text] {
+    font-family: var(--texto);
+    font-weight: 100;
     width: 360px;
     height: 48px;
     outline: none;
@@ -144,6 +256,7 @@ a {
 }
 
 .pesquisa > button {
+    font-family: var(--texto);
     width: 228px;
     height: 48px;
     outline: none;
@@ -169,6 +282,8 @@ a {
 }
 
 .botoes {
+    font-family: var(--titulo);
+    font-weight: 300;
     width: auto;
     margin-left: 5px;
     padding: 8px 16px;
