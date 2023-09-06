@@ -1,9 +1,7 @@
-import './style.css';
-// import { geoapify } from './secrets';
-// import { WebContainer } from '@webcontainer/api';
+// NÃO IMPORTE CSS PELO MODULE JS, DISALLOWED MIME-TYPE
+// import './style.css';
 
-var latitude;
-var longitude;
+// import { WebContainer } from '@webcontainer/api';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -11,35 +9,38 @@ document.addEventListener('DOMContentLoaded', () => {
      * input de texto onde coloca o endereço para entrega.
      * @type {HTMLElement}
      */
-    var entregaInputElement = document.getElementById("entrega-input");
+    const entregaInputElement = document.getElementById("entrega-input");
+
+    /**
+     * div escrito "Usar minha localização" no modal.
+     * @type {HTMLElement}
+     */
+    const usarLocalModalButton = document.getElementById('div-gps');
+
+    /**
+     * input de endereço no modal.
+     * @type {HTMLElement}
+     */
+    const modalInput = document.getElementById('modal-input');
 
     /**
      * Pede permissão do cliente para usar o GPS, caso a permissão seja cedida, é retornado
      * Latitude e longitude, caso seja negado, é retornado Error Object (error.code & error.message)
      * 
      * @type {Promise<void>}
-     * @returns {Array} [latitude, longitude]
+     * @param {JSON Object} options opções de precisão, timeout, entre outros, para o GPS do navegador.
+     * @returns {[int, int]} [latitude, longitude]
      */
-    function gpsRequest() {
+    function gpsRequest(options = { enableHighAccuracy: true, timeout: 20000 }) {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition((pos) => {
-                latitude = pos.coords.latitude;
-                longitude = pos.coords.longitude;
+                const latitude = pos.coords.latitude;
+                const longitude = pos.coords.longitude;
 
-                // let message = `(Latitude, Longitude) ${latitude}, ${longitude}`;
-                // console.info(message);
-
-                /**
-                 * posArray é um array com latitude na posição 0, e longitude na posição 1.
-                 * [latitude, longitude]
-                 * 
-                 * @type {number[]}
-                 */
-                let posArray = [latitude, longitude];
-                return resolve(posArray);
+                return resolve([latitude, longitude]);
             }, (err) => {
                 return reject(err);
-            });
+            }, options);
         });
     }
 
@@ -47,15 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
      * Completa o endereço do pedido automaticamente usando latitude e longitude do cliente
      */
     function autocompleteAdress() {
-        if (entregaInputElement.value.length >= 10)
+        if (modalInput.value.length >= 10)
             return;
 
-        let pastPlaceholder = entregaInputElement.placeholder;
-        entregaInputElement.placeholder = 'Pedindo permissão GPS...';
+        const pastPlaceholder = modalInput.placeholder;
+        modalInput.placeholder = 'Pedindo permissão GPS...';
 
         gpsRequest().then((pos) => {
 
-            entregaInputElement.placeholder = 'Consultando GPS...';
+            modalInput.placeholder = 'Consultando GPS...';
 
             // fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${data[0]}&lon=${data[1]}&apiKey=${import.meta.env.VITE_GEOAPIFY_API}`, requestOptions)
             // .then(response => response.json()).then(result => {
@@ -80,49 +81,79 @@ document.addEventListener('DOMContentLoaded', () => {
             // 
             // mande um pacote GET para a proxy (localhost na branch dev) passando latitude e longitude.
 
-            fetch(`http://localhost:3000/api/geo?lat=${pos[0]}&lon=${pos[1]}`, {method: 'GET'})
+            fetch(`http://localhost:443/api/geo?lat=${pos[0]}&lon=${pos[1]}`, {method: 'GET'})
             .then(response => response.json()).then(result => {
-                    entregaInputElement.placeholder = pastPlaceholder;
+                    modalInput.placeholder = pastPlaceholder;
 
                     /**
                      * Endereço formatado
                      */
-                    let address = result.features[0].properties.formatted;
-                    entregaInputElement.value = address;
+                    const properties = result.features[0].properties;
+                    const address = `${properties.address_line1}, ${properties.suburb} - ${properties.city}`;
+                    console.info(result);
+                    modalInput.value = address;
                 }).catch(error => {
                     console.log('error', error)
-                    entregaInputElement.placeholder = pastPlaceholder;
+                    modalInput.placeholder = pastPlaceholder;
                 });
 
         }, (err) => {
             if (err.code != 1) {
                 new Promise(() => {
-                    entregaInputElement.placeholder = 'Ocorreu um erro ao consultar o GPS.';
-                    entregaInputElement.value = '';
+                    modalInput.placeholder = 'Ocorreu um erro ao consultar o GPS.';
+                    modalInput.value = '';
                     setTimeout(() => {
-                        entregaInputElement.placeholder = pastPlaceholder;
+                        modalInput.placeholder = pastPlaceholder;
                     }, 2500);
                     return;
                 });
             } else {
-                return entregaInputElement.placeholder = pastPlaceholder;
+                return modalInput.placeholder = pastPlaceholder;
             }
         });
     }
     
-    entregaInputElement.addEventListener('click', autocompleteAdress);
+    /**
+     * esconde ou mostra o modal.
+     * @param {boolean} show
+     * @typedef {void}
+     */
+    function showModal(show = true) {
+        if (typeof show != 'boolean') 
+            throw new TypeError("argument passed is not a boolean.");
+        if (show == undefined || show === null)
+            throw new TypeError("argument is null or undefined.");
+        
+        if (show)
+            modal.style.display = 'flex';
+        else
+            modal.style.display = 'none';
+    }
 
-    var modal = document.getElementById("modal");
-    var mercado_btn = document.getElementById("mercado-btn");
+    entregaInputElement.addEventListener('click', () => {
+        showModal(true);
+        modalInput.click();
+        modalInput.focus();
+    });
+    usarLocalModalButton.addEventListener('click', autocompleteAdress);
 
-    mercado_btn.addEventListener("click", () => {
-        modal.style.display = 'flex';   
+    modalInput.addEventListener('keypress', (e) => {
+        if (e.key == "Enter") {
+            e.preventDefault();
+            alert('go to next page :)');
+        }
     })
+
+    const modal = document.getElementById("modal");
+    const mercado_btn = document.getElementById("mercado-btn");
+
+    showModal(false);
+    mercado_btn.addEventListener("click", () => showModal(true))
     
     window.onclick = function(event) {
         if (event.target == modal) {
-          modal.style.display = "none";
+          showModal(false);
         }
-      }  
+      }
 })
 

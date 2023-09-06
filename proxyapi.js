@@ -1,34 +1,39 @@
 import * as dotenv from "dotenv"
-import express, { response } from "express";
+
+import express from "express";
 import fetch from "node-fetch";
+import path from "path";
 import rateLimit from "express-rate-limit";
+
+import { fileURLToPath } from "url";
+
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
 const app = express();
-const port = 3000;
+const port = 443;
 dotenv.config();
 
-// Rate limiting - Goodreads limits to 1/sec, so we should too
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
-// see https://expressjs.com/en/guide/behind-proxies.html
-// app.set('trust proxy', 1);
+const firebase = initializeApp(JSON.parse(process.env.FIREBASE_CONFIG));
+const auth = getAuth(firebase);
 
 const limiter = rateLimit({
-	windowMs: 1500, // 1.5 second
-	max: 1, // limit each IP to 1 requests per windowMs
+	windowMs: 500,
+	max: 10,
 })
 
-//  apply to all requests
+// apply to all requests
 app.use(limiter)
 
-// Routes
+// serve web content when browsing on http://localhost/
+app.use("/", express.static(__dirname, {extensions: ['*/*']}));
 
-// Test route, visit localhost:3000 to confirm it's working
-// should show 'Hello World!' in the browser
-// app.get("/", (req, res) => res.send("Hello World!"));
-
+// serve API, looking for GET requests
 app.get("/api/geo", (req, res) => {
     try {
-
 		var lat = req.query.lat;
         var lon = req.query.lon;
 
@@ -47,4 +52,33 @@ app.get("/api/geo", (req, res) => {
     }
 });
 
-app.listen(port, () => console.log(`listening for API requests on http://localhost:${port}`));
+// serve POST listening for registering users
+app.post('/user/register/:email/:password', (req, res) => {
+    let email = req.params.email;
+    let password = req.params.password;
+
+    createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        res.status(200).json({user: userCredential});
+    }).catch((error) => {
+        res.status(error.code).json(error);
+    });
+})
+
+// serve GET listening for logging existing users
+app.get('/user/login/:email/:password', (req, res) => {
+    let email = req.params.email;
+    let password = req.params.password;
+
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        res.status(200).json({user: userCredential});
+    }).catch((error) => {
+        res.status(error.code).json(error);
+    });
+})
+
+// serve 404 error page.
+app.use(express.static(__dirname + '/404'), (req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '/404/index.html'));
+});
+
+app.listen(port, () => console.log(`serving WEB content and REST API requests on http://localhost:${port}`));
